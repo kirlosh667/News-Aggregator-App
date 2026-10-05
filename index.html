@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="College Campus Management Platform - A comprehensive system for managing students, faculty, courses, attendance, timetables, assignments, exams, events, and announcements.">
+    <title>CampusHub — College Campus Management Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+                <span class="logo-text">CampusHub</span>
+            </div>
+            <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#" class="nav-link active" data-page="dashboard"><i class="fas fa-th-large"></i><span>Dashboard</span></a></li>
+                <li><a href="#" class="nav-link" data-page="students"><i class="fas fa-user-graduate"></i><span>Students</span></a></li>
+                <li><a href="#" class="nav-link" data-page="faculty"><i class="fas fa-chalkboard-teacher"></i><span>Faculty</span></a></li>
+                <li><a href="#" class="nav-link" data-page="courses"><i class="fas fa-book-open"></i><span>Courses</span></a></li>
+                <li><a href="#" class="nav-link" data-page="attendance"><i class="fas fa-clipboard-check"></i><span>Attendance</span></a></li>
+                <li><a href="#" class="nav-link" data-page="timetable"><i class="fas fa-calendar-alt"></i><span>Timetable</span></a></li>
+                <li><a href="#" class="nav-link" data-page="assignments"><i class="fas fa-tasks"></i><span>Assignments</span></a></li>
+                <li><a href="#" class="nav-link" data-page="exams"><i class="fas fa-file-alt"></i><span>Exams & Results</span></a></li>
+                <li><a href="#" class="nav-link" data-page="events"><i class="fas fa-calendar-star"></i><span>Events</span></a></li>
+                <li><a href="#" class="nav-link" data-page="announcements"><i class="fas fa-bullhorn"></i><span>Announcements</span></a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-mini">
+                <div class="user-mini-avatar"><i class="fas fa-user-shield"></i></div>
+                <div class="user-mini-info">
+                    <span class="user-mini-name">Admin</span>
+                    <span class="user-mini-role">Super Admin</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ==================== OVERLAY ==================== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="main-content" id="mainContent">
+
+        <!-- ==================== TOP NAVBAR ==================== -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="hamburger" id="hamburgerBtn" aria-label="Toggle sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="globalSearch" placeholder="Search students, courses, faculty..." autocomplete="off">
+                </div>
+            </div>
+            <div class="topbar-right">
+                <button class="topbar-btn theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="topbar-btn notification-btn" id="notificationBtn" aria-label="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notifBadge">3</span>
+                </button>
+                <div class="topbar-user" id="topbarUser">
+                    <div class="topbar-avatar"><i class="fas fa-user-shield"></i></div>
+                    <span class="topbar-username">Admin</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==================== NOTIFICATION DROPDOWN ==================== -->
+        <div class="notification-dropdown" id="notifDropdown">
+            <div class="notif-header">
+                <h3>Notifications</h3>
+                <button id="clearNotifs">Clear all</button>
+            </div>
+            <div class="notif-list" id="notifList">
+                <!-- Filled by JS -->
+            </div>
+        </div>
+
+        <!-- ==================== PAGE CONTENT ==================== -->
+        <div class="page-content">
+
+            <!-- ========== DASHBOARD PAGE ========== -->
+            <section class="page active" id="page-dashboard">
+                <div class="page-header">
+                    <div>
+                        <h1>Dashboard</h1>
+                        <p class="page-subtitle">Welcome back, Admin. Here's what's happening today.</p>
+                    </div>
+                    <div class="page-header-date" id="currentDate"></div>
+                </div>
+                <!-- Stats Cards -->
+                <div class="stats-grid" id="dashboardStats">
+                    <!-- Filled by JS -->
+                </div>
+                <!-- Charts -->
+                <div class="charts-row">
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <h3>Student Attendance Overview</h3>
+                            <select id="attendanceChartFilter" class="chart-filter">
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="attendanceChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <h3>Academic Performance</h3>
+                            <select id="performanceChartFilter" class="chart-filter">
+                                <option value="semester">Current Semester</option>
+                                <option value="year">This Year</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- Recent Activities and Announcements -->
+                <div class="dashboard-bottom-row">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3><i class="fas fa-history"></i> Recent Activities</h3>
+                        </div>
+                        <div class="activity-list" id="recentActivities">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3><i class="fas fa-bullhorn"></i> Latest Announcements</h3>
+                            <a href="#" class="view-all-link" data-page="announcements">View All</a>
+                        </div>
+                        <div class="announcement-list" id="dashAnnouncements">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Upcoming Events on Dashboard -->
+                <div class="dashboard-bottom-row">
+                    <div class="dash-card full-width">
+                        <div class="dash-card-header">
+                            <h3><i class="fas fa-calendar-day"></i> Upcoming Events</h3>
+                            <a href="#" class="view-all-link" data-page="events">View All</a>
+                        </div>
+                        <div class="events-preview" id="dashEvents">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== STUDENTS PAGE ========== -->
+            <section class="page" id="page-students">
+                <div class="page-header">
+                    <div>
+                        <h1>Student Management</h1>
+                        <p class="page-subtitle">Manage all student records, profiles, and information.</p>
+                    </div>
+                    <button class="btn btn-primary" id="addStudentBtn"><i class="fas fa-plus"></i> Add Student</button>
+                </div>
+                <div class="filter-bar">
+                    <div class="search-filter">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="studentSearch" placeholder="Search by name or ID...">
+                    </div>
+                    <select id="studentDeptFilter" class="filter-select">
+                        <option value="">All Departments</option>
+                    </select>
+                    <select id="studentYearFilter" class="filter-select">
+                        <option value="">All Years</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                        <option value="4">4th Year</option>
+                    </select>
+                    <select id="studentSortFilter" class="filter-select">
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                        <option value="id-asc">ID (Ascending)</option>
+                        <option value="id-desc">ID (Descending)</option>
+                    </select>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="studentsTable">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Course</th>
+                                <th>Year</th>
+                                <th>Email</th>
+                                <th>Attendance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                    <div class="empty-state hidden" id="studentsEmpty">
+                        <i class="fas fa-user-graduate"></i>
+                        <p>No students found</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== STUDENT PROFILE PAGE ========== -->
+            <section class="page" id="page-student-profile">
+                <div class="page-header">
+                    <div>
+                        <button class="btn btn-outline back-btn" id="backToStudents"><i class="fas fa-arrow-left"></i> Back to Students</button>
+                        <h1 id="profileStudentName">Student Profile</h1>
+                    </div>
+                </div>
+                <div class="profile-container" id="studentProfileContent">
+                    <!-- Filled by JS -->
+                </div>
+            </section>
+
+            <!-- ========== FACULTY PAGE ========== -->
+            <section class="page" id="page-faculty">
+                <div class="page-header">
+                    <div>
+                        <h1>Faculty Management</h1>
+                        <p class="page-subtitle">Manage faculty members, their departments, and subjects.</p>
+                    </div>
+                    <button class="btn btn-primary" id="addFacultyBtn"><i class="fas fa-plus"></i> Add Faculty</button>
+                </div>
+                <div class="filter-bar">
+                    <div class="search-filter">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="facultySearch" placeholder="Search by name or ID...">
+                    </div>
+                    <select id="facultyDeptFilter" class="filter-select">
+                        <option value="">All Departments</option>
+                    </select>
+                    <select id="facultySortFilter" class="filter-select">
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                    </select>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="facultyTable">
+                        <thead>
+                            <tr>
+                                <th>Faculty ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Subject</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="facultyTableBody">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                    <div class="empty-state hidden" id="facultyEmpty">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <p>No faculty found</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== COURSES PAGE ========== -->
+            <section class="page" id="page-courses">
+                <div class="page-header">
+                    <div>
+                        <h1>Course Management</h1>
+                        <p class="page-subtitle">Browse and manage all available courses.</p>
+                    </div>
+                    <button class="btn btn-primary" id="addCourseBtn"><i class="fas fa-plus"></i> Add Course</button>
+                </div>
+                <div class="filter-bar">
+                    <div class="search-filter">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="courseSearch" placeholder="Search courses...">
+                    </div>
+                    <select id="courseDeptFilter" class="filter-select">
+                        <option value="">All Departments</option>
+                    </select>
+                </div>
+                <div class="cards-grid" id="coursesGrid">
+                    <!-- Filled by JS -->
+                </div>
+                <div class="empty-state hidden" id="coursesEmpty">
+                    <i class="fas fa-book-open"></i>
+                    <p>No courses found</p>
+                </div>
+            </section>
+
+            <!-- ========== ATTENDANCE PAGE ========== -->
+            <section class="page" id="page-attendance">
+                <div class="page-header">
+                    <div>
+                        <h1>Attendance Management</h1>
+                        <p class="page-subtitle">Track and manage student attendance records.</p>
+                    </div>
+                </div>
+                <div class="filter-bar">
+                    <select id="attendanceDeptFilter" class="filter-select">
+                        <option value="">All Departments</option>
+                    </select>
+                    <input type="date" id="attendanceDateFilter" class="filter-select">
+                    <button class="btn btn-primary" id="saveAttendanceBtn"><i class="fas fa-save"></i> Save Attendance</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="attendanceTable">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Status</th>
+                                <th>Attendance %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ========== TIMETABLE PAGE ========== -->
+            <section class="page" id="page-timetable">
+                <div class="page-header">
+                    <div>
+                        <h1>Weekly Timetable</h1>
+                        <p class="page-subtitle">View the weekly schedule for classes, subjects, and faculty.</p>
+                    </div>
+                    <select id="timetableDeptFilter" class="filter-select">
+                        <option value="">All Departments</option>
+                    </select>
+                </div>
+                <div class="timetable-wrapper">
+                    <div class="timetable-scroll">
+                        <table class="timetable" id="timetableGrid">
+                            <!-- Filled by JS -->
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== ASSIGNMENTS PAGE ========== -->
+            <section class="page" id="page-assignments">
+                <div class="page-header">
+                    <div>
+                        <h1>Assignments</h1>
+                        <p class="page-subtitle">Manage and track all assignments and their statuses.</p>
+                    </div>
+                    <button class="btn btn-primary" id="addAssignmentBtn"><i class="fas fa-plus"></i> Add Assignment</button>
+                </div>
+                <div class="filter-bar">
+                    <div class="search-filter">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="assignmentSearch" placeholder="Search assignments...">
+                    </div>
+                    <select id="assignmentStatusFilter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Submitted">Submitted</option>
+                        <option value="Overdue">Overdue</option>
+                    </select>
+                </div>
+                <div class="cards-grid" id="assignmentsGrid">
+                    <!-- Filled by JS -->
+                </div>
+                <div class="empty-state hidden" id="assignmentsEmpty">
+                    <i class="fas fa-tasks"></i>
+                    <p>No assignments found</p>
+                </div>
+            </section>
+
+            <!-- ========== EXAMS PAGE ========== -->
+            <section class="page" id="page-exams">
+                <div class="page-header">
+                    <div>
+                        <h1>Exams & Results</h1>
+                        <p class="page-subtitle">Manage examination schedules and student results.</p>
+                    </div>
+                    <div class="page-header-actions">
+                        <button class="btn btn-primary" id="addExamBtn"><i class="fas fa-plus"></i> Add Exam</button>
+                        <button class="btn btn-secondary" id="addResultBtn"><i class="fas fa-plus"></i> Add Result</button>
+                    </div>
+                </div>
+                <div class="tabs" id="examTabs">
+                    <button class="tab active" data-tab="schedules">Exam Schedules</button>
+                    <button class="tab" data-tab="results">Results</button>
+                </div>
+                <div class="tab-content active" id="tab-schedules">
+                    <div class="table-container">
+                        <table class="data-table" id="examsTable">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                    <th>Department</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="examsTableBody">
+                                <!-- Filled by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-results">
+                    <div class="filter-bar">
+                        <div class="search-filter">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="resultSearch" placeholder="Search by student name or ID...">
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table" id="resultsTable">
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Student Name</th>
+                                    <th>Subject</th>
+                                    <th>Marks</th>
+                                    <th>Percentage</th>
+                                    <th>Grade</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody">
+                                <!-- Filled by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== EVENTS PAGE ========== -->
+            <section class="page" id="page-events">
+                <div class="page-header">
+                    <div>
+                        <h1>College Events</h1>
+                        <p class="page-subtitle">Create and manage college events and activities.</p>
+                    </div>
+                    <button class="btn btn-primary" id="addEventBtn"><i class="fas fa-plus"></i> Add Event</button>
+                </div>
+                <div class="filter-bar">
+                    <div class="search-filter">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="eventSearch" placeholder="Search events...">
+                    </div>
+                </div>
+                <div class="cards-grid" id="eventsGrid">
+                    <!-- Filled by JS -->
+                </div>
+                <div class="empty-state hidden" id="eventsEmpty">
+                    <i class="fas fa-calendar-day"></i>
+                    <p>No events found</p>
+                </div>
+            </section>
+
+            <!-- ========== ANNOUNCEMENTS PAGE ========== -->
+            <section class="page" id="page-announcements">
+                <div class="page-header">
+                    <div>
+                        <h1>Announcements</h1>
+                        <p class="page-subtitle">Manage college announcements and important notices.</p>
+                    </div>
+                    <button class="btn btn-primary" id="addAnnouncementBtn"><i class="fas fa-plus"></i> Add Announcement</button>
+                </div>
+                <div class="filter-bar">
+                    <div class="search-filter">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="announcementSearch" placeholder="Search announcements...">
+                    </div>
+                </div>
+                <div class="announcements-list-page" id="announcementsListPage">
+                    <!-- Filled by JS -->
+                </div>
+                <div class="empty-state hidden" id="announcementsEmpty">
+                    <i class="fas fa-bullhorn"></i>
+                    <p>No announcements found</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ==================== MODAL ==================== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContainer">
+            <div class="modal-header">
+                <h2 id="modalTitle">Modal Title</h2>
+                <button class="modal-close" id="modalClose" aria-label="Close modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic form content -->
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <button class="btn btn-outline" id="modalCancel">Cancel</button>
+                <button class="btn btn-primary" id="modalSave">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CONFIRM DIALOG ==================== -->
+    <div class="modal-overlay" id="confirmOverlay">
+        <div class="modal confirm-modal">
+            <div class="confirm-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <h2 id="confirmTitle">Are you sure?</h2>
+            <p id="confirmMessage">This action cannot be undone.</p>
+            <div class="confirm-actions">
+                <button class="btn btn-outline" id="confirmCancel">Cancel</button>
+                <button class="btn btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TOAST ==================== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
